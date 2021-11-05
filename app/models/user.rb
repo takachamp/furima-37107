@@ -10,8 +10,8 @@ class User < ApplicationRecord
     validates :first_name_reading, :last_name_reading, format: {with:/\A[ァ-ヶ一-]+\z/, message: 'is invalid. Input full-width katakana characters'}
   end
   validates :password, :password_confirmation,
-  format: { with: /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze, message: 'is invalid. Include both letters and numbers'}
+  format: { with: /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i, message: 'is invalid. Include both letters and numbers'}
 
-  has_many :orders
+  #has_many :orders
   has_many :items
 end

@@ -35,10 +35,10 @@ RSpec.describe User, type: :model do
       end
 
       it '同じメールアドレスを登録できない' do
-        @user.save
-        another_user = FactoryBot.build(:user, email: @user.email)
-        another_user.valid?
-        expect(another_user.errors.full_messages).to include('Email has already been taken')
+        another_user = FactoryBot.create(:user)
+        @user.email = another_user.email
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Email has already been taken')
       end
 
       it '＠のないメールアドレスは登録できない' do
@@ -65,6 +65,27 @@ RSpec.describe User, type: :model do
         @user.password_confirmation = '1234567'
         @user.valid?
         expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
+      end
+
+      it '英字のみのパスワードは登録できない' do
+        @user.password = Faker::Lorem.characters(number:6, min_alpha: 6)
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+      end
+
+      it '数字のみのパスワードは登録できない' do
+        @user.password = Faker::Lorem.characters(number: 6, min_numeric: 6)
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+      end
+
+      it '全角文字を含むパスワードは登録できない' do
+        password_zenkaku = Faker::Lorem.characters(number: 1, min_numeric: 1)
+        require'nkf'
+        password_zenkaku.tr("A-Z0-9","A-Z0-9")
+        @user.password = password_zenkaku
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
       end
 
       it "first_nameが空では登録できない" do
