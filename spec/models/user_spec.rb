@@ -67,22 +67,20 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
       end
 
-      it '英字のみのパスワードは登録できない' do
+      it '英字のみのpasswordは登録できない' do
         @user.password = Faker::Lorem.characters(number:6, min_alpha: 6)
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
       end
 
-      it '数字のみのパスワードは登録できない' do
+      it '数字のみのpasswordは登録できない' do
         @user.password = Faker::Lorem.characters(number: 6, min_numeric: 6)
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
       end
 
-      it '全角文字を含むパスワードは登録できない' do
+      it '全角文字を含むpasswordは登録できない' do
         password_zenkaku = Faker::Lorem.characters(number: 1, min_numeric: 1)
-        require'nkf'
-        password_zenkaku.tr("A-Z0-9","A-Z0-9")
         @user.password = password_zenkaku
         @user.valid?
         expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
