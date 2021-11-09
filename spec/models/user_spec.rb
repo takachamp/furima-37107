@@ -7,8 +7,7 @@ RSpec.describe User, type: :model do
 
   describe 'ユーザー新規登録' do
     context '新規登録できる場合' do
-      
-      it "nickname,email,password,password_confirmation,first_name,last_name,first_name_reading,last_name_reading,birthdayが存在すれば登録できる" do
+      it 'nickname,email,password,password_confirmation,first_name,last_name,first_name_reading,last_name_reading,birthdayが存在すれば登録できる' do
         expect(@user).to be_valid
       end
 
@@ -17,18 +16,16 @@ RSpec.describe User, type: :model do
         @user.password_confirmation = '123abc'
         expect(@user).to be_valid
       end
-    
     end
-    
+
     context '新規登録できない場合' do
-      
-      it "nameが空では登録できない" do
+      it 'nameが空では登録できない' do
         @user.nickname = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Nickname can't be blank")
       end
 
-      it "emailが空では登録できない" do
+      it 'emailが空では登録できない' do
         @user.email = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Email can't be blank")
@@ -44,10 +41,10 @@ RSpec.describe User, type: :model do
       it '＠のないメールアドレスは登録できない' do
         @user.email = Faker::Lorem.characters(number: 10, min_alpha: 5)
         @user.valid?
-        expect(@user.errors.full_messages).to include("Email is invalid")
+        expect(@user.errors.full_messages).to include('Email is invalid')
       end
 
-      it "passwordが空では登録できない" do
+      it 'passwordが空では登録できない' do
         @user.password = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Password can't be blank")
@@ -68,32 +65,32 @@ RSpec.describe User, type: :model do
       end
 
       it '英字のみのpasswordは登録できない' do
-        @user.password = Faker::Lorem.characters(number:6, min_alpha: 6)
+        @user.password = Faker::Lorem.characters(number: 6, min_alpha: 6)
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+        expect(@user.errors.full_messages).to include('Password is invalid. Include both letters and numbers')
       end
 
       it '数字のみのpasswordは登録できない' do
         @user.password = Faker::Lorem.characters(number: 6, min_numeric: 6)
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+        expect(@user.errors.full_messages).to include('Password is invalid. Include both letters and numbers')
       end
 
       it '全角文字を含むpasswordは登録できない' do
         password_zenkaku = Faker::Lorem.characters(number: 1, min_numeric: 1)
         @user.password = password_zenkaku
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password is invalid. Include both letters and numbers")
+        expect(@user.errors.full_messages).to include('Password is invalid. Include both letters and numbers')
       end
 
-      it "first_nameが空では登録できない" do
-        @user.first_name = ""
+      it 'first_nameが空では登録できない' do
+        @user.first_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("First name can't be blank")
       end
 
-      it "last_nameが空では登録できない" do
-        @user.last_name = ""
+      it 'last_nameが空では登録できない' do
+        @user.last_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name can't be blank")
       end
@@ -101,43 +98,43 @@ RSpec.describe User, type: :model do
       it 'first_nameが半角では登録できない' do
         @user.first_name = Faker::Alphanumeric.alphanumeric(number: 5)
         @user.valid?
-        expect(@user.errors.full_messages).to include("First name is invalid. Input full-width characters")
+        expect(@user.errors.full_messages).to include('First name is invalid. Input full-width characters')
       end
-  
+
       it 'last_nameが半角では登録できない' do
         @user.last_name = Faker::Alphanumeric.alphanumeric(number: 5)
         @user.valid?
-        expect(@user.errors.full_messages).to include("Last name is invalid. Input full-width characters")
+        expect(@user.errors.full_messages).to include('Last name is invalid. Input full-width characters')
       end
-  
+
       it 'first_name_readingが空では登録できない' do
         @user.first_name_reading = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("First name reading can't be blank")
       end
-  
+
       it 'last_name_readingが空では登録できない' do
         @user.last_name_reading = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name reading can't be blank")
       end
-  
+
       it 'first_name_readingが半角では登録できない' do
         require 'nkf'
         first_half_kana = Gimei.first.katakana
         @user.first_name_reading = NKF.nkf('-w -Z4 -x', first_half_kana)
         @user.valid?
-        expect(@user.errors.full_messages).to include("First name reading is invalid. Input full-width katakana characters")
+        expect(@user.errors.full_messages).to include('First name reading is invalid. Input full-width katakana characters')
       end
-  
+
       it 'last_name_readingが半角では登録できない' do
         require 'nkf'
         last_half_kana = Gimei.last.katakana
         @user.last_name_reading = NKF.nkf('-w -Z4 -x', last_half_kana)
         @user.valid?
-        expect(@user.errors.full_messages).to include("Last name reading is invalid. Input full-width katakana characters")
+        expect(@user.errors.full_messages).to include('Last name reading is invalid. Input full-width katakana characters')
       end
-  
+
       it 'birthdayが空では登録できない' do
         @user.birthday = ''
         @user.valid?
