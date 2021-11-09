@@ -7,19 +7,17 @@ RSpec.describe Item, type: :model do
 
   describe '商品の出品機能' do
     context '商品出品ができる場合' do
-      
-      it "item_name, item_info, category_id, condition_id, shipping_cost_id, shipping_area_id, shipping_date_id, price, imageが存在すれば登録できる" do
+      it 'item_name, item_info, category_id, condition_id, shipping_cost_id, shipping_area_id, shipping_date_id, price, imageが存在すれば登録できる' do
         expect(@item).to be_valid
       end
 
       it 'priceが300円以上9,999,999円以下であれば登録できる' do
-        @item.price = Faker::Number.between(from: 300, to: 9999999)
+        @item.price = Faker::Number.between(from: 300, to: 9_999_999)
         expect(@item).to be_valid
       end
     end
 
     context '商品出品ができない場合' do
-      
       it 'item_nameが空では登録できない' do
         @item.item_name = ''
         @item.valid?
@@ -71,17 +69,17 @@ RSpec.describe Item, type: :model do
       it 'priceが全角数字では登録できない' do
         @item.price = '/\A[０-９]+\z/'
         @item.valid?
-        expect(@item.errors.full_messages).to include("Price is invalid. Input half-width characters")
+        expect(@item.errors.full_messages).to include('Price is invalid. Input half-width characters')
       end
 
       it '文字を含むpriceは登録できない' do
         @item.price = Faker::Lorem.characters(number: 5, min_alpha: 1, min_numeric: 4)
         @item.valid?
-        expect(@item.errors.full_messages).to include("Price is invalid. Input half-width characters")
+        expect(@item.errors.full_messages).to include('Price is invalid. Input half-width characters')
       end
 
       it 'priceが300円未満では登録できない' do
-        @item.price = Faker::Number.between(from: 1,to: 299 )
+        @item.price = Faker::Number.between(from: 1, to: 299)
         @item.valid?
         expect(@item.errors.full_messages).to include('Price is out of setting range')
       end
