@@ -10,7 +10,6 @@ RSpec.describe Order, type: :model do
     end
 
     context '内容に問題ない場合' do
-
       it 'すべての値が正しく入力されていれば決済できる' do
         expect(@destination_order).to be_valid
       end
@@ -27,7 +26,6 @@ RSpec.describe Order, type: :model do
     end
 
     context '内容に問題がある場合' do
-
       it 'postal_codeが空だと決済できない' do
         @destination_order.postal_code = ''
         @destination_order.valid?
@@ -61,19 +59,19 @@ RSpec.describe Order, type: :model do
       it 'phone numberは数字でないと決済できない' do
         @destination_order.phone_number = Faker::Lorem.characters(number: 11, min_alpha: 11)
         @destination_order.valid?
-        expect(@destination_order.errors.full_messages).to include("Phone number Input only number")
+        expect(@destination_order.errors.full_messages).to include('Phone number Input only number')
       end
-      
+
       it 'phone numberが全角数字では決済できない' do
         @destination_order.phone_number = '０１２３４５６７８９０'
         @destination_order.valid?
-        expect(@destination_order.errors.full_messages).to include("Phone number Input only number")
+        expect(@destination_order.errors.full_messages).to include('Phone number Input only number')
       end
 
       it 'phone numberは10~11桁の半角数字でないと決済できない' do
         @destination_order.phone_number = Faker::Number.between(from: 1, to: 9)
         @destination_order.valid?
-        expect(@destination_order.errors.full_messages).to include("Phone number Input only number")
+        expect(@destination_order.errors.full_messages).to include('Phone number Input only number')
       end
 
       it 'cityが空だと決済できない' do
@@ -89,12 +87,12 @@ RSpec.describe Order, type: :model do
       end
 
       it 'tokenが空だと決済できない' do
-        @destination_order.token =''
+        @destination_order.token = ''
         @destination_order.valid?
         expect(@destination_order.errors.full_messages).to include("Token can't be blank")
       end
 
-      it'itemが紐付いていないと決済できない' do
+      it 'itemが紐付いていないと決済できない' do
         @destination_order.item_id = nil
         @destination_order.valid?
         expect(@destination_order.errors.full_messages).to include("Item can't be blank")
@@ -105,6 +103,6 @@ RSpec.describe Order, type: :model do
         @destination_order.valid?
         expect(@destination_order.errors.full_messages).to include("User can't be blank")
       end
-    end    
+    end
   end
 end
