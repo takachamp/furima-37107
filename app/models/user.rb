@@ -13,6 +13,6 @@ class User < ApplicationRecord
   validates :password, :password_confirmation,
             format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, message: 'is invalid. Include both letters and numbers' }
 
-  # has_many :orders
+  has_many :orders
   has_many :items
 end
