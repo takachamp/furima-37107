@@ -68,8 +68,14 @@ RSpec.describe Order, type: :model do
         expect(@destination_order.errors.full_messages).to include('Phone number Input only number')
       end
 
-      it 'phone numberは10~11桁の半角数字でないと決済できない' do
+      it 'phone numberは9桁以下では決済できない' do
         @destination_order.phone_number = Faker::Number.between(from: 1, to: 9)
+        @destination_order.valid?
+        expect(@destination_order.errors.full_messages).to include('Phone number Input only number')
+      end
+
+      it 'phone numberは12桁以上では決済できない' do
+        @destination_order.phone_number = Faker::Number.number(digits: 13)
         @destination_order.valid?
         expect(@destination_order.errors.full_messages).to include('Phone number Input only number')
       end
